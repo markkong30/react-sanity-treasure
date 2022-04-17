@@ -9,6 +9,7 @@ import Spinner from './Spinner';
 const Feed = () => {
   const [loading, setLoading] = useState(false);
   const [pins, setPins] = useState(null);
+  const [currentQuery, setCurrentQuery] = useState(null);
   const { categoryId } = useParams();
 
   useEffect(() => {
@@ -19,9 +20,12 @@ const Feed = () => {
         console.log(data)
         setPins(data);
         setLoading(false);
+        setCurrentQuery(query)
       })
 
   }, [categoryId])
+
+
 
   if (loading) {
     return <Spinner message="We are adding new ideas to your feed!" />
@@ -29,7 +33,7 @@ const Feed = () => {
 
   return (
     <div>
-      {pins && <MasonryLayout pins={pins} />}
+      {pins && <MasonryLayout pins={pins} currentQuery={currentQuery} setPins={setPins} />}
     </div>
   );
 };

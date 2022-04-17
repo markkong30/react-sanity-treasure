@@ -32,7 +32,11 @@ export const searchQuery = (searchTerm) => {
 };
 
 export const feedQuery = `*[_type == "pin"] | order(_createdAt desc) {
-	image,
+	image{
+		asset->{
+			url
+		}
+	},
 		_id,
 		destination,
 		postedBy->{
