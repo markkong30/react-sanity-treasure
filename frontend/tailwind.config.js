@@ -83,6 +83,8 @@ module.exports = {
 		cursor: {
 			"zoom-in": "zoom-in",
 			pointer: "pointer",
+			copy: "copy",
+			"not-allowed": "not-allowed",
 		},
 	},
 	variants: {

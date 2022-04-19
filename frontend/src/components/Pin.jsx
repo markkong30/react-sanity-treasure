@@ -31,7 +31,6 @@ const Pin = ({ pin, setPins, currentQuery }) => {
     e.stopPropagation();
 
     if (!alreadySaved) {
-
       client.patch(_id)
         .setIfMissing({ save: [] })
         .insert('after', 'save[-1]', [{
@@ -52,7 +51,25 @@ const Pin = ({ pin, setPins, currentQuery }) => {
           //   })
           // window.location.reload();
         })
+    } else {
+      client.patch(_id)
+        .unset([`save[userID=="${user.googleId}"]`])
+        .commit()
+        .then(() => {
+          setAlreadySaved(false)
+        })
+
     }
+  }
+
+  const deletePin = e => {
+    e.stopPropagation();
+
+    client.delete(_id)
+      .then(() => {
+        window.location.reload();
+      })
+
   }
 
 
@@ -82,12 +99,33 @@ const Pin = ({ pin, setPins, currentQuery }) => {
                   className={alreadySaved ? '' : 'opacity-75 hover:opacity-100'} />
               </button>
             </div>
+            <div className="flex justify-between items-center gap-2 w-full">
+              {destination && (
+                <a href={destination} target="_blank" rel='noreferrer'
+                  className='bg-white flex items center gap-2 text-black font-bold py-2 px-4 rounded-full opacity-75 hover:opacity-100 hover:shadow-md hover:scale-105'>
+                  <BsFillArrowUpRightCircleFill />
+                </a>
+              )}
+              {postedBy?._id == user.googleId && (
+                <button className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none hover:scale-105"
+                  onClick={deletePin}>
+                  <AiTwotoneDelete />
+                </button>
+              )}
+            </div>
           </div>
         )}
-
       </div>
+      <Link to={`/user-profile/${postedBy?._id}`} className="flex gap-2 mt-3 items-center">
+        <img
+          className="w-8 h-8 rounded-full object-cover"
+          src={postedBy?.image}
+          alt="user-profile"
+        />
+        <p className="font-semibold capitalize text-gray-700">{postedBy?.username}</p>
+      </Link>
 
-    </div>
+    </div >
   );
 };
 
