@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { client } from '../client';
 import { categories } from '../utils/categories';
-import { feedQuery, searchQuery } from '../utils/query';
+import { followedQuery } from '../utils/query';
 import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
 
-const Feed = () => {
+const FollowedFeed = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [pins, setPins] = useState(null);
-  const { categoryId } = useParams();
 
   useEffect(() => {
-    setLoading(true);
-    const query = categoryId ? searchQuery(categoryId) : feedQuery;
-    client.fetch(query)
-      .then(data => {
-        console.log(data)
-        setPins(data);
-        setLoading(false);
-      })
+    if (user) {
+      setLoading(true);
 
-  }, [categoryId])
+      let followingUsers = [];
+      for (const ele of user.following) {
+        followingUsers = [...followingUsers, ...[`'${ele.userID}'`]]
+      }
+
+      const query = followedQuery(followingUsers);
+      client.fetch(query)
+        .then(data => {
+          console.log(data)
+          setPins(data);
+          setLoading(false);
+        })
+    }
+
+  }, [user])
 
 
 
@@ -38,4 +44,4 @@ const Feed = () => {
   );
 };
 
-export default Feed;
+export default FollowedFeed;

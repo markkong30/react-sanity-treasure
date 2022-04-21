@@ -11,11 +11,11 @@ const breakpoints = {
   500: 1,
 }
 
-const MasonryLayout = ({ pins, setPins, currentQuery }) => {
+const MasonryLayout = ({ pins, setPins }) => {
   return (
     <Masonry className="flex animate-slide-fwd" breakpointCols={breakpoints}>
       {pins?.map(pin => (
-        <Pin key={pin._id} pin={pin} setPins={setPins} currentQuery={currentQuery} className="w-max" />
+        <Pin key={pin._id} pin={pin} setPins={setPins} className="w-max" />
       ))}
     </Masonry>
   );

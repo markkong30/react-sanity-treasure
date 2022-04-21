@@ -8,7 +8,7 @@ import { client, urlFor } from '../client';
 import { fetchUser } from '../utils/fetchUser';
 
 
-const Pin = ({ pin, setPins, currentQuery }) => {
+const Pin = ({ pin, setPins }) => {
   const { postedBy, image, _id, destination, save } = pin;
   const [postHovered, setPostHovered] = useState(false);
   const [alreadySaved, setAlreadySaved] = useState(false)
@@ -44,12 +44,6 @@ const Pin = ({ pin, setPins, currentQuery }) => {
         .commit()
         .then(() => {
           setAlreadySaved(true)
-          // client.fetch(currentQuery)
-          //   .then(data => {
-          //     console.log(data)
-          //     setPins(data);
-          //   })
-          // window.location.reload();
         })
     } else {
       client.patch(_id)

@@ -2,32 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GoogleLogout } from 'react-google-login';
+import { v4 as uuidv4 } from 'uuid';
 
 import { userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils/query';
 import { client, urlFor } from '../client';
 import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
+import { fetchUser } from '../utils/fetchUser';
 
 const UserProfile = () => {
   const [user, setUser] = useState();
   const [pins, setPins] = useState();
+  const [followed, setFollowed] = useState(false);
   const [toggleView, setToggleView] = useState('My posts')
   const navigate = useNavigate();
   const { userID } = useParams();
+  const accountUser = fetchUser();
 
   const activeBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-32 outline-none';
   const notActiveBtnStyles = 'bg-gray-100 mr-4 text-black font-bold p-2 rounded-full w-32 outline-none';
 
 
   useEffect(() => {
-    const query = userQuery(userID);
-
-    client.fetch(query)
-      .then(data => {
-        setUser(data[0]);
-      })
+    getUserInfo();
 
   }, [])
+
 
   useEffect(() => {
     const createdPinQuery = userCreatedPinsQuery(userID);
@@ -47,7 +47,70 @@ const UserProfile = () => {
 
   }, [toggleView])
 
+  const getUserInfo = () => {
+    const query = userQuery(userID);
 
+    client.fetch(query)
+      .then(data => {
+        console.log(data)
+        setUser(data[0]);
+        setFollowed(data[0].follower?.find(ele => accountUser.googleId == ele.userID) !== undefined)
+      })
+  }
+
+  const fetchInitialFollow = () => {
+    client.patch(user._id)
+      .setIfMissing({ follower: [] })
+      .insert('after', 'follower[-1]', [{
+        _key: uuidv4(),
+        userID: accountUser.googleId,
+        followedBy: {
+          _type: 'followedBy',
+          _ref: accountUser.googleId,
+        }
+      }])
+      .commit()
+      .then(() => {
+        // setFollowed(true)
+      })
+
+    client.patch(accountUser.googleId)
+      .setIfMissing({ following: [] })
+      .insert('after', 'following[-1]', [{
+        _key: uuidv4(),
+        userID: user._id,
+        followTo: {
+          _type: 'followTo',
+          _ref: user._id,
+        }
+      }])
+      .commit()
+      .then(() => {
+        // setFollowed(true)
+        getUserInfo();
+      })
+  }
+
+  const handleFollow = () => {
+    if (!followed) {
+      fetchInitialFollow();
+    } else {
+      client.patch(user._id)
+        .unset([`follower[userID=="${accountUser.googleId}"]`])
+        .commit()
+        .then(() => {
+          // setFollowed(false)
+        })
+
+      client.patch(accountUser.googleId)
+        .unset([`following[userID=="${user._id}"]`])
+        .commit()
+        .then(() => {
+          // setFollowed(false)
+          getUserInfo();
+        })
+    }
+  }
 
   const logout = () => {
     localStorage.clear();
@@ -70,7 +133,28 @@ const UserProfile = () => {
               src={user.image}
               alt="user-pic"
             />
-            <h1 className="font-bold text-2xl lg:text-3xl text-center mt-4">{user.username}</h1>
+            <div className="information flex flex-col gap-3 justify-center items-center mt-4">
+              <div className='relative flex gap-4'>
+                <h1 className="font-bold text-2xl lg:text-3xl text-center ">{user.username}</h1>
+                {accountUser?.googleId !== userID &&
+                  <button
+                    className='absolute bottom-[50%] translate-y-1/2 right-0 translate-x-[150%] bg-sky-400 px-3 py-1 text-sm text-white rounded-xl'
+                    onClick={handleFollow}
+                  >
+                    {followed ? 'Followed' : 'Follow'}
+                  </button>
+                }
+              </div>
+              {user?.follower?.length > 1 ?
+                <h4 className='text-lg text-gray-600 underline'>
+                  {user?.follower?.length} followers
+                </h4>
+                :
+                <h4 className='text-lg text-gray-600 underline'>
+                  {user?.follower?.length || 0} follower
+                </h4>
+              }
+            </div>
             <div className="absolute top-0 z-1 right-0 p-2">
               {userID == user._id && (
                 <GoogleLogout
@@ -96,16 +180,16 @@ const UserProfile = () => {
               type='button'
               onClick={() => setToggleView('My posts')}
               className={toggleView == 'My posts' ? activeBtnStyles : notActiveBtnStyles}>
-              My posts
+              POSTS
             </button>
             <button
               type='button'
               onClick={() => setToggleView('Liked posts')}
               className={toggleView == 'Liked posts' ? activeBtnStyles : notActiveBtnStyles}>
-              Liked posts
+              LIKED
             </button>
           </div>
-          {pins.length ?
+          {pins?.length ?
             <div className="px-2">
               <MasonryLayout pins={pins} />
             </div>

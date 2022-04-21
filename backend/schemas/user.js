@@ -13,5 +13,17 @@ export default {
 			title: "Image",
 			type: "string",
 		},
+		{
+			name: "follower",
+			title: "Follower",
+			type: "array",
+			of: [{ type: "follower" }],
+		},
+		{
+			name: "following",
+			title: "Following",
+			type: "array",
+			of: [{ type: "following" }],
+		},
 	],
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MdDownloadForOffline } from 'react-icons/md';
+import { BsFillArrowUpRightCircleFill, BsHeart, BsFillHeartFill } from 'react-icons/bs';
 import { Link, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,10 +11,21 @@ import Spinner from './Spinner';
 
 const PinDetail = ({ user }) => {
   const { pinId } = useParams();
-  const [morePins, setMorePins] = useState();
-  const [pinDetail, setPinDetail] = useState();
+  const [morePins, setMorePins] = useState(null);
+  const [pinDetail, setPinDetail] = useState(null);
   const [comment, setComment] = useState('');
   const [addingComment, setAddingComment] = useState(false);
+  const [alreadySaved, setAlreadySaved] = useState(false)
+
+  useEffect(() => {
+    fetchPinDetails();
+  }, [pinId])
+
+  useEffect(() => {
+    if (user !== null && pinDetail !== null) {
+      setAlreadySaved(pinDetail.save?.find(ele => ele.postedBy._id == user._id) !== undefined)
+    }
+  }, [user, pinDetail])
 
   const fetchPinDetails = () => {
     let query = pinDetailQuery(pinId);
@@ -29,16 +41,46 @@ const PinDetail = ({ user }) => {
             client.fetch(query)
               .then(data => {
                 setMorePins(data)
-                console.log(data)
+
               })
           }
         })
     }
   }
 
-  useEffect(() => {
-    fetchPinDetails();
-  }, [])
+  const savePin = e => {
+    e.stopPropagation();
+
+    if (!alreadySaved) {
+      client.patch(pinId)
+        .setIfMissing({ save: [] })
+        .insert('after', 'save[-1]', [{
+          _key: uuidv4(),
+          userID: user._id,
+          postedBy: {
+            _type: 'postedBy',
+            _ref: user._id
+          }
+        }])
+        .commit()
+        .then(() => {
+          setAlreadySaved(true)
+          fetchPinDetails();
+        })
+    } else {
+      client.patch(pinId)
+        .unset([`save[userID=="${user._id}"]`])
+        .commit()
+        .then(() => {
+          setAlreadySaved(false)
+          fetchPinDetails();
+
+        })
+
+    }
+  }
+
+
 
   const addComment = () => {
     if (comment) {
@@ -78,19 +120,39 @@ const PinDetail = ({ user }) => {
         </div>
         <div className="w-full p-5 flex-1 xl:min-w-620">
           <div className="flex items-center justify-between">
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-3 items-center">
+
+              <button className='' onClick={savePin}>
+                {alreadySaved ?
+                  <BsFillHeartFill fontSize={24} color="red" />
+                  :
+                  <BsHeart fontSize={24} />
+                }
+              </button>
+              {pinDetail?.save?.length ?
+                <h4>
+                  <span className='font-bold'>{pinDetail?.save.length} </span>
+                  <span>{pinDetail?.save.length == 1 ? ' like' : 'likes'}</span>
+                </h4>
+                :
+                <h4>Be the first one to like...</h4>
+
+              }
+            </div>
+            <div className='flex gap-3'>
+              <a href={pinDetail.destination} target="_blank" rel="noreferrer"
+                className='rounded-2xl bg-gray-100 px-4 py-2 '>
+                Check the article
+              </a>
               <a
                 href={`${pinDetail.image.asset.url}?dl=`}
                 download
-                className="bg-secondaryColor p-2 text-xl rounded-full flex items-center justify-center text-dark opacity-75 hover:opacity-100"
+                className="bg-secondaryColor p-2 text-xl rounded-full flex items-center justify-center text-dark opacity-75"
               >
                 <MdDownloadForOffline />
               </a>
             </div>
-            <a href={pinDetail.destination} target="_blank" rel="noreferrer"
-              className='rounded-2xl bg-gray-100 px-4 py-2 hover:shadow'>
-              Check the article
-            </a>
+
           </div>
           <div className='description py-2'>
             <h1 className="text-4xl font-bold break-words mt-3">{pinDetail.title}</h1>
@@ -101,7 +163,7 @@ const PinDetail = ({ user }) => {
             <p className="font-bold">{pinDetail?.postedBy.username}</p>
           </Link>
           <h2 className="mt-10 text-2xl">Comments</h2>
-          <div className="max-h-370 overflow-y-auto">
+          <div className="min-h-[50px] max-h-570 overflow-y-auto">
             {pinDetail?.comments?.map((item) => (
               <div className="flex gap-2 mt-5 items-center bg-white rounded-lg" key={uuidv4()}>
                 <img
@@ -120,7 +182,7 @@ const PinDetail = ({ user }) => {
           <div className="flex justify-between flex-wrap mt-6 gap-3 items-center">
             <div className='flex flex-1'>
               <Link to={`/user-profile/${pinDetail?.postedBy._id}`} className="bg-white rounded-lg mr-2">
-                <img src={pinDetail?.postedBy.image} className="w-10 h-10 rounded-full object-cover" alt="user-profile" />
+                <img src={user.image} className="w-10 h-10 rounded-full object-cover" alt="user-profile" />
               </Link>
               <input
                 className='basis-11/12 border-gray-100 outline-none border-2 p-2 rounded-2xl focus:border-gray-300'

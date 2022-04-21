@@ -157,16 +157,42 @@ export const userSavedPinsQuery = (userId) => {
     destination,
     postedBy->{
       _id,
-      userName,
+      username,
       image
     },
     save[]{
       postedBy->{
         _id,
-        userName,
+        username,
         image
       },
     },
   }`;
+	return query;
+};
+
+export const followedQuery = (users) => {
+	const query = `*[_type == 'pin' && userID in [${users}]] | order(_createdAt desc) {
+    image{
+      asset->{
+        url
+      }
+    },
+    _id,
+    destination,
+    postedBy->{
+      _id,
+      username,
+      image
+    },
+    save[]{
+      postedBy->{
+        _id,
+        username,
+        image
+      },
+    },
+  }`;
+
 	return query;
 };
