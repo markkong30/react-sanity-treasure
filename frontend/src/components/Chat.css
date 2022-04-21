@@ -1,0 +1,29 @@
+#chat ::-webkit-scrollbar {
+	width: 0; /* Remove scrollbar space */
+	background: transparent; /* Optional: just make scrollbar invisible */
+}
+
+#chat .ce-message-bubble.ce-my-message-bubble {
+	background-color: #ff5a52 !important;
+}
+
+.ce-message-bubble {
+	border-radius: 1.5rem !important;
+}
+
+.ce-chat-title-text,
+.ce-chat-subtitle-text {
+	color: #ef4444 !important;
+}
+
+#ce-send-message-button {
+	background-color: #ff5a52 !important;
+}
+
+.ce-chat-feed-container {
+	min-height: 65vh !important;
+}
+
+.ql-editor {
+	white-space: initial !important;
+}

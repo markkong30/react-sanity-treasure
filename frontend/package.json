@@ -9,6 +9,7 @@
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
     "autoprefixer": "^10.4.4",
+    "axios": "^0.26.1",
     "postcss": "^8.4.12",
     "react": "^18.0.0",
     "react-chat-engine": "^1.11.22",

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { AiOutlineLogout } from 'react-icons/ai';
+import { AiOutlineLogout, AiFillMessage } from 'react-icons/ai';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GoogleLogout } from 'react-google-login';
 import { v4 as uuidv4 } from 'uuid';
 
+import { Link } from 'react-router-dom';
 import { userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils/query';
 import { client, urlFor } from '../client';
 import MasonryLayout from './MasonryLayout';
@@ -137,23 +138,34 @@ const UserProfile = () => {
               <div className='relative flex gap-4'>
                 <h1 className="font-bold text-2xl lg:text-3xl text-center ">{user.username}</h1>
                 {accountUser?.googleId !== userID &&
-                  <button
-                    className='absolute bottom-[50%] translate-y-1/2 right-0 translate-x-[150%] bg-sky-400 px-3 py-1 text-sm text-white rounded-xl'
-                    onClick={handleFollow}
-                  >
-                    {followed ? 'Followed' : 'Follow'}
-                  </button>
+                  <div className='items-center absolute bottom-[50%] translate-y-1/2 right-0 translate-x-[150%]'>
+                    <button
+                      className='bg-sky-400 px-3 py-1 text-sm text-white rounded-xl'
+                      onClick={handleFollow}
+                    >
+                      {followed ? 'Followed' : 'Follow'}
+                    </button>
+
+                  </div>
+
                 }
               </div>
-              {user?.follower?.length > 1 ?
-                <h4 className='text-lg text-gray-600 underline'>
-                  {user?.follower?.length} followers
-                </h4>
-                :
-                <h4 className='text-lg text-gray-600 underline'>
-                  {user?.follower?.length || 0} follower
-                </h4>
-              }
+              <div className='relative flex'>
+                {user?.follower?.length > 1 ?
+                  <h4 className='text-lg text-gray-600 underline'>
+                    {user?.follower?.length} followers
+                  </h4>
+                  :
+                  <h4 className='text-lg text-gray-600 underline'>
+                    {user?.follower?.length || 0} follower
+                  </h4>
+                }
+                <Link to={`/chat/${user.username}`}>
+                  <AiFillMessage className='absolute right-0 bottom-[50%] translate-y-1/2 translate-x-[250%] cursor-pointer opacity-80' fontSize={32} />
+                </Link>
+
+              </div>
+
             </div>
             <div className="absolute top-0 z-1 right-0 p-2">
               {userID == user._id && (
@@ -175,7 +187,7 @@ const UserProfile = () => {
               )}
             </div>
           </div>
-          <div className="flex justify-center items-center gap-20 my-7">
+          <div className="flex justify-center items-center gap-20 mt-12 mb-7">
             <button
               type='button'
               onClick={() => setToggleView('My posts')}

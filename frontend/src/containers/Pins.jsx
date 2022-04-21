@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Navbar, Feed, PinDetail, CreatePin, Search, FollowedFeed } from '../components';
+import Chat from '../components/Chat';
 
 const Pins = ({ user }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +14,7 @@ const Pins = ({ user }) => {
       <div className="h-full">
         <Routes>
           <Route path="/" element={<Feed />} />
+          <Route path="/chat/:counterpart" element={<Chat user={user && user} />} />
           <Route path="/category/:categoryId" element={<Feed />} />
           <Route path="/followed" element={<FollowedFeed user={user && user} />} />
           <Route path="/pin-detail/:pinId" element={<PinDetail user={user && user} />} />

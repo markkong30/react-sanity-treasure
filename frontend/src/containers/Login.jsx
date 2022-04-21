@@ -12,12 +12,13 @@ const Login = () => {
   const responseGoogle = response => {
     console.log(response)
     localStorage.setItem('user', JSON.stringify(response.profileObj));
-    const { name, googleId, imageUrl } = response.profileObj;
+    const { name, googleId, imageUrl, email } = response.profileObj;
 
     const doc = {
       _id: googleId,
       _type: 'user',
       username: name,
+      email: email,
       image: imageUrl
     }
 
