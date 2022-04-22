@@ -15,7 +15,7 @@ const Pin = ({ pin, setPins }) => {
   const user = fetchUser();
   const getInitialSaved = () => save?.find(item => {
     if (item.postedBy !== null) {
-      return setAlreadySaved(item.postedBy._id == user?.googleId)
+      return setAlreadySaved(item.postedBy?._id == user?.googleId)
     }
     // return setAlreadySaved(false);
   })
@@ -35,10 +35,10 @@ const Pin = ({ pin, setPins }) => {
         .setIfMissing({ save: [] })
         .insert('after', 'save[-1]', [{
           _key: uuidv4(),
-          userID: user.googleId,
+          userID: user?.googleId,
           postedBy: {
             _type: 'postedBy',
-            _ref: user.googleId
+            _ref: user?.googleId
           }
         }])
         .commit()
@@ -47,7 +47,7 @@ const Pin = ({ pin, setPins }) => {
         })
     } else {
       client.patch(_id)
-        .unset([`save[userID=="${user.googleId}"]`])
+        .unset([`save[userID=="${user?.googleId}"]`])
         .commit()
         .then(() => {
           setAlreadySaved(false)
@@ -100,7 +100,7 @@ const Pin = ({ pin, setPins }) => {
                   <BsFillArrowUpRightCircleFill />
                 </a>
               )}
-              {postedBy?._id == user.googleId && (
+              {postedBy?._id == user?.googleId && (
                 <button className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none hover:scale-105"
                   onClick={deletePin}>
                   <AiTwotoneDelete />
