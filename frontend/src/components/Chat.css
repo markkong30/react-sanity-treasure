@@ -27,3 +27,11 @@
 .ql-editor {
 	white-space: initial !important;
 }
+
+.ce-feed-container-top {
+	height: 0 !important;
+}
+
+#ce-send-message-button svg {
+	transform: translateY(-20%);
+}

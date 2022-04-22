@@ -160,7 +160,7 @@ const UserProfile = () => {
                     {user?.follower?.length || 0} follower
                   </h4>
                 }
-                <Link to={`/chat/${user.username}`}>
+                <Link to={`/chat/${user._id}`}>
                   <AiFillMessage className='absolute right-0 bottom-[50%] translate-y-1/2 translate-x-[250%] cursor-pointer opacity-80' fontSize={32} />
                 </Link>
 
