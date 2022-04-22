@@ -20,7 +20,7 @@ const Home = () => {
     const userInfo = fetchUser();
     scrollRef.current.scrollTo(0, 0);
 
-    const query = userQuery(userInfo.googleId);
+    const query = userQuery(userInfo?.googleId);
 
     client.fetch(query)
       .then(data => {

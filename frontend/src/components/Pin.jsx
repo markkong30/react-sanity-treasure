@@ -15,7 +15,7 @@ const Pin = ({ pin, setPins }) => {
   const user = fetchUser();
   const getInitialSaved = () => save?.find(item => {
     if (item.postedBy !== null) {
-      return setAlreadySaved(item.postedBy._id == user.googleId)
+      return setAlreadySaved(item.postedBy._id == user?.googleId)
     }
     // return setAlreadySaved(false);
   })
