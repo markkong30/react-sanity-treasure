@@ -4,7 +4,7 @@ import { userQuery } from '../utils/query'
 import { client } from '../client'
 import axios from 'axios'
 import './Chat.css'
-import { ChatEngineWrapper, Socket, ChatHeader, ChatSocket, ChatFeed, ChatList } from 'react-chat-engine'
+import { ChatEngineWrapper, Socket, ChatHeader, ChatSocket, ChatFeed, } from 'react-chat-engine'
 
 const Chat = ({ user }) => {
   const [chat, setChat] = useState(null);
@@ -83,7 +83,7 @@ const Chat = ({ user }) => {
 
   return (
 
-    <div id="chat" className='relative w-full min-h-[60vh] md:min-h-[85vh] ' >
+    <div id="chat" className='relative w-full min-h-[60vh] md:min-h-[70vh]' >
       {chat &&
         <>
           <ChatEngineWrapper>
@@ -99,13 +99,13 @@ const Chat = ({ user }) => {
             />
             {/* <ChatList /> */}
             {/* <ChatHeader activeChat={chat.id} title={chatUser.username} /> */}
-            <ChatFeed className='flex flex-1' renderChatHeader={(chat) => {
+            <ChatFeed className='flex flex-1 ' renderChatHeader={(chat) => {
               return (
                 <div className="font-bold text-2xl pt-6 pb-2 text-red-500 flex justify-center items-center bg-white">{chatUser.username}</div>
               )
             }} />
-            {/* <ChatSettings className='w-full' /> */}
           </ChatEngineWrapper>
+
         </>
       }
 

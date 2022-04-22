@@ -1,6 +1,6 @@
 #chat ::-webkit-scrollbar {
-	width: 0; /* Remove scrollbar space */
-	background: transparent; /* Optional: just make scrollbar invisible */
+	width: 0;
+	background: transparent;
 }
 
 #chat .ce-message-bubble.ce-my-message-bubble {
@@ -34,4 +34,12 @@
 
 #ce-send-message-button svg {
 	transform: translateY(-20%);
+}
+
+#ce-feed-container {
+	max-height: 75vh !important;
+}
+
+#msg-form-container {
+	/* transform: translateY(20%) !important ; */
 }
