@@ -34,6 +34,7 @@ const Chat = ({ user }) => {
 
   function getOrCreateUser() {
     const { username, _id, email } = user;
+    console.log(username, _id, email)
     axios.put(
       'https://api.chatengine.io/users/',
       { username: username, email: email, secret: _id },

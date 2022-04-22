@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { RiHomeFill } from 'react-icons/ri';
 import { BsFillHeartFill } from 'react-icons/bs';
@@ -8,11 +8,17 @@ import logo from '../assets/logo.png';
 import { categories } from '../utils/categories';
 import { GoogleLogout } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+
 
 
 const Sidebar = ({ user, setSidebarToggle }) => {
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+    getUsers();
+  }, [])
   const closeSidebar = () => {
     if (setSidebarToggle !== 'undefined') {
       setSidebarToggle(false)
@@ -22,6 +28,22 @@ const Sidebar = ({ user, setSidebarToggle }) => {
   const logout = () => {
     localStorage.clear();
     navigate('/login');
+  }
+
+  const getUsers = (successFunc) => {
+    axios.get(
+      `https://api.chatengine.io/users/`,
+      { headers: { "Private-Key": process.env.REACT_APP_CHAT_PRIVATE_KEY } }
+    )
+
+      .then((response) => {
+        console.log(response)
+        // successFunc(response.data)
+      })
+
+      .catch((error) => {
+        console.log('Create chat user', error.response)
+      })
   }
 
   const isNotActiveStyle = 'flex items-center px-5 gap-3 text-gray-500 hover:text-black transition-all duration-200 ease-in-out capitalize';

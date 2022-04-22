@@ -16,7 +16,7 @@ const Feed = () => {
     const query = categoryId ? searchQuery(categoryId) : feedQuery;
     client.fetch(query)
       .then(data => {
-        console.log(data)
+        // console.log(data)
         setPins(data);
         setLoading(false);
       })
