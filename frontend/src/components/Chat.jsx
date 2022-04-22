@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { userQuery } from '../utils/query'
 import { client } from '../client'
+import Spinner from './Spinner'
 import axios from 'axios'
+import { getOrCreateChat, getOrCreateUser } from '../utils/fetchChatroom'
 import './Chat.css'
 import { ChatEngineWrapper, Socket, ChatHeader, ChatSocket, ChatFeed, } from 'react-chat-engine'
 
 const Chat = ({ user }) => {
   const [chat, setChat] = useState(null);
   const [chatUser, setChatUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { counterpart } = useParams();
 
   useEffect(() => {
-    if (user !== null && user !== undefined) {
-
+    if (user) {
       const query = userQuery(counterpart);
 
       client.fetch(query)
@@ -22,69 +24,24 @@ const Chat = ({ user }) => {
         })
 
     }
-  }, [user])
-
+  }, [user, counterpart])
 
   useEffect(() => {
     if (chatUser) {
-      getOrCreateUser();
 
+      getOrCreateUser(user, chatUser, (chat) => {
+        console.log(chat)
+        setChat(chat);
+        setLoading(false);
+
+      });
     }
   }, [chatUser])
-
-  function getOrCreateUser() {
-    const { username, _id, email } = user;
-    console.log(username, _id, email)
-    axios.put(
-      'https://api.chatengine.io/users/',
-      { username: username, email: email, secret: _id },
-      { headers: { "Private-Key": process.env.REACT_APP_CHAT_PRIVATE_KEY } }
-    )
-      .then((res) => {
-        // console.log(res)
-        axios.put(
-          'https://api.chatengine.io/users/',
-          { username: chatUser.username, email: chatUser.email, secret: chatUser._id },
-          { headers: { "Private-Key": process.env.REACT_APP_CHAT_PRIVATE_KEY } }
-        )
-          .then((res) => {
-            // console.log(res)
-            getOrCreateChat();
-            // createDirectChat();
-          })
-          .catch(e => console.log('Get or create user error', e))
-
-      })
-      .catch(e => console.log('Get or create user error', e))
-
-
-  }
-
-  function getOrCreateChat() {
-    const { username, _id } = user;
-
-    axios.put(
-      'https://api.chatengine.io/chats/',
-      { usernames: [username, chatUser.username], is_direct_chat: true },
-      {
-        headers: {
-          "Project-ID": process.env.REACT_APP_CHAT_PROJECT_ID,
-          "User-Name": username,
-          "User-Secret": _id,
-        }
-      }
-    )
-      .then(res => {
-        setChat(res.data)
-      })
-      .catch(e => console.log('Get or create chat error', e))
-  }
-
 
   return (
 
     <div id="chat" className='relative w-full min-h-[60vh] md:min-h-[70vh]' >
-      {chat &&
+      {chat && !loading ?
         <>
           <ChatEngineWrapper>
             <ChatSocket
@@ -105,8 +62,9 @@ const Chat = ({ user }) => {
               )
             }} />
           </ChatEngineWrapper>
-
         </>
+        :
+        <Spinner message={'Loading chat...'} />
       }
 
     </div>

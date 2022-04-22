@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLogout, AiFillMessage } from 'react-icons/ai';
+import { BsMessenger } from 'react-icons/bs';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GoogleLogout } from 'react-google-login';
 import { v4 as uuidv4 } from 'uuid';
@@ -160,10 +161,11 @@ const UserProfile = () => {
                     {user?.follower?.length || 0} follower
                   </h4>
                 }
-                <Link to={`/chat/${user._id}`}>
-                  <AiFillMessage className='absolute right-0 bottom-[50%] translate-y-1/2 translate-x-[250%] cursor-pointer opacity-80' fontSize={32} />
-                </Link>
-
+                {accountUser?.googleId !== userID &&
+                  <Link to={`/chat/${user._id}`}>
+                    <BsMessenger color='#0B86EE' className='absolute right-0 bottom-[50%] translate-y-1/2 translate-x-[250%] cursor-pointer opacity-80' fontSize={32} />
+                  </Link>
+                }
               </div>
 
             </div>

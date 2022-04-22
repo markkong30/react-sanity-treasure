@@ -4,6 +4,12 @@ export const userQuery = (userID) => {
 	return query;
 };
 
+export const chatUserQuery = (username) => {
+	const query = `*[_type == 'user' && username == '${username}']`;
+
+	return query;
+};
+
 export const searchQuery = (searchTerm) => {
 	const query = `*[_type == 'pin' && title match '${searchTerm}*' || category match '${searchTerm}*' || about match '${searchTerm}*']{
 		image {

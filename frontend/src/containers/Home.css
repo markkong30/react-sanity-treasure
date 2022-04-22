@@ -1,0 +1,17 @@
+.ce-chat-form-container {
+	display: none !important;
+}
+
+.ce-chats-container > div:last-child {
+	display: none !important;
+	/* background-color: red !important; */
+}
+
+.chat-list::-webkit-scrollbar {
+	width: 0;
+	background: transparent;
+}
+
+.ce-chat-subtitle-text {
+	color: black !important;
+}

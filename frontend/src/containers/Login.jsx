@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import bgVideo from '../assets/share.mp4';
 import logo from '../assets/logowhite.png';
+import treasureMono from '../assets/treasure_mono.svg'
 import { client } from '../client';
 
 const Login = () => {
@@ -35,7 +36,7 @@ const Login = () => {
           className='w-full h-full object-cover' />
         <div className="absolute flex flex-col justify-center items-center top-0 left-0 bottom-0 right-0 bg-blackOverlay">
           <div className="p-5">
-            <img src={logo} width="130px" alt="logo" />
+            <img src={treasureMono} width="150px" alt="logo" />
           </div>
           <div className="shadow-2x1">
             <GoogleLogin
@@ -47,7 +48,7 @@ const Login = () => {
                   onClick={renderProps.onClick}
                   disabled={renderProps.disabled}
                 >
-                  <FcGoogle className='mr-4' /> Sign in with Goggle
+                  <FcGoogle className='mr-4' /> Sign in with Google
                 </button>
               )}
               onSuccess={responseGoogle}

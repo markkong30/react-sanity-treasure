@@ -35,6 +35,7 @@ const PinDetail = ({ user }) => {
       client.fetch(query)
         .then(data => {
           setPinDetail(data[0])
+          console.log(data[0])
 
           if (data[0]) {
             query = recommendPinQuery(data[0]);
@@ -167,11 +168,13 @@ const PinDetail = ({ user }) => {
           <div className="min-h-[50px] max-h-570 overflow-y-auto">
             {pinDetail?.comments?.map((item) => (
               <div className="flex gap-2 mt-5 items-center bg-white rounded-lg" key={uuidv4()}>
-                <img
-                  src={item.postedBy?.image}
-                  className="w-10 h-10 mr-2 rounded-full cursor-pointer"
-                  alt="user-profile"
-                />
+                <Link to={`/user-profile/${item.postedBy?._id}`}>
+                  <img
+                    src={item.postedBy?.image}
+                    className="w-10 h-10 mr-2 rounded-full cursor-pointer"
+                    alt="user-profile"
+                  />
+                </Link>
                 <div className="flex flex-col">
                   <p className="font-bold text-sm">{item.postedBy?.username}</p>
                   <p>{item.comment}</p>
