@@ -15,9 +15,9 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const scrollRef = useRef(null);
 
-  const userInfo = fetchUser();
 
   useEffect(() => {
+    const userInfo = fetchUser();
     scrollRef.current.scrollTo(0, 0);
 
     const query = userQuery(userInfo.googleId);
