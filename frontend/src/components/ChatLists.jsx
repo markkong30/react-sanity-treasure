@@ -18,11 +18,14 @@ const ChatLists = ({ user, handleSidebar }) => {
   }, [addChat])
 
   const fetchChatUsers = () => {
-    const query = `*[_type == 'user' && username !='${user.username}' ]`
-
+    const query = `*[_type == 'user' && username !='${user.username}' ]`;
+    let options = [];
     client.fetch(query)
       .then(data => {
-        console.log(data)
+        for (const ele of data) {
+          options = [...options, { value: ele.username, label: ele.username }];
+        }
+        console.log(options)
       })
   }
 

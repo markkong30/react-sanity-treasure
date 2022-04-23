@@ -41,20 +41,20 @@ const Home = () => {
       setShowChats(false);
       setToggleSidebar(false);
       // document.body.style.overflowY = 'scroll';
+      // document.body.style.overflowY = 'scroll';
+      // document.body.style.position = 'relative';
 
-      // scrollRef.current.style.overflowY = 'scroll';
-      document.body.style.overflowY = 'scroll';
-      document.body.style.position = 'relative';
+      scrollRef.current.style.overflowY = 'scroll';
 
 
     } else {
       setToggleSidebar(true);
       // console.log(document.body.style.overflowY)
-      document.body.style.overflowY = 'hidden';
-      document.body.style.position = 'fixed';
-      document.querySelector('#sidebar').style.position = 'relative';
-      document.querySelector('#sidebar').style.overflowY = 'scroll';
-      // scrollRef.current.style.overflowY = 'hidden';
+      // document.body.style.overflowY = 'hidden';
+      // document.body.style.position = 'fixed';
+      // document.querySelector('#sidebar').style.position = 'relative';
+      // document.querySelector('#sidebar').style.overflowY = 'hidden';
+      scrollRef.current.style.overflowY = 'hidden';
     }
 
   }
@@ -77,7 +77,7 @@ const Home = () => {
           </Link>
         </div>
         {toggleSidebar && (
-          <div className="fixed w-4/5 bg-white h-screen overflow-y-auto shadow-md z-10 animate-slide-in">
+          <div className="fixed w-screen bg-white h-screen overflow-y-auto shadow-md z-10 animate-slide-in">
             <div className="absolute w-full flex justify-end items-center p-4 mt-2">
               <AiOutlineClose fontSize={28} className='cursor-pointer' onClick={() => handleSidebar('close')} />
             </div>
