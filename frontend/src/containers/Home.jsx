@@ -16,7 +16,6 @@ import './Home.css'
 const Home = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [user, setUser] = useState(null);
-  const [chatUser, setChatUser] = useState(null);
   const [showChats, setShowChats] = useState(false);
 
   const scrollRef = useRef(null);
@@ -50,9 +49,12 @@ const Home = () => {
     if (action == 'close') {
       setShowChats(false);
       setToggleSidebar(false);
-      scrollRef.current.style.overflowY = 'scroll';
+      // document.body.style.overflowY = 'scroll';
+
+      scrollRef.current.style.overflowY = 'auto';
     } else {
       setToggleSidebar(true);
+      // document.body.style.overflowY = 'hidden';
       scrollRef.current.style.overflowY = 'hidden';
     }
 
@@ -66,7 +68,7 @@ const Home = () => {
         <Sidebar user={user && user} handleSidebar={handleSidebar} showChats={showChats} setShowChats={setShowChats} />
       </div>
       <div className="flex md:hidden flex-row">
-        <div className="p-2 w-full flex flex-row justify-between items-center shadow-md">
+        <div className="fixed z-[10] p-2 w-full flex flex-row justify-between items-center shadow-md bg-white">
           <HiMenu fontSize={40} className='cursor-pointer' onClick={() => handleSidebar('open')} />
           <Link to='/'>
             <img src={treasure} className='w-40' alt="" />

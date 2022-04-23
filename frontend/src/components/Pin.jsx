@@ -71,7 +71,7 @@ const Pin = ({ pin, setPins }) => {
   return (
     <div className='m-2' id="pin">
       <div
-        onTouchStart={() => navigate(`/pin-detail/${_id}`)}
+        onTouchEnd={() => navigate(`/pin-detail/${_id}`)}
         onMouseOver={() => setPostHovered(true)}
         onMouseOut={() => setPostHovered(false)}
         onClick={() => navigate(`/pin-detail/${_id}`)}
