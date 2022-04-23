@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsFillPersonPlusFill } from 'react-icons/bs';
 import { ChatEngineWrapper, Socket, ChatList } from 'react-chat-engine';
+import Select from 'react-select'
+import { client } from '../client';
 
 
 const ChatLists = ({ user, handleSidebar }) => {
   const [addChat, setAddChat] = useState(false);
+  const [chatUserOptions, setChatUserOptions] = useState([]);
 
+  useEffect(() => {
+    if (addChat) {
+      fetchChatUsers();
+    }
+
+  }, [addChat])
+
+  const fetchChatUsers = () => {
+    const query = `*[_type == 'user' && username !='${user.username}' ]`
+
+    client.fetch(query)
+      .then(data => {
+        console.log(data)
+      })
+  }
 
   return (
     <div>
@@ -14,21 +32,21 @@ const ChatLists = ({ user, handleSidebar }) => {
         <div className='flex justify-between items-center px-4 py-6 bg-white mr-[1px]'>
           {!addChat ?
             <div className='flex gap-4 items-center cursor-pointer' onClick={() => setAddChat(true)}>
-              <h4 className='text-xl md:text-lg'>Chats</h4>
+              <h4 className='text-xl md:text-lg'>Messages</h4>
               <BsFillPersonPlusFill fontSize={24} />
             </div>
             :
             <div className=''>
               {/* <Select
-                  defaultValue={colourOptions[0]}
-                  isDisabled={isDisabled}
-                  isLoading={isLoading}
-                  isClearable={isClearable}
-                  isRtl={isRtl}
-                  isSearchable={isSearchable}
-                  name="color"
-                  options={colourOptions}
-                /> */}
+                defaultValue={colourOptions[0]}
+                isDisabled={isDisabled}
+                isLoading={isLoading}
+                isClearable={isClearable}
+                isRtl={isRtl}
+                isSearchable={isSearchable}
+                name="color"
+                options={colourOptions}
+              /> */}
             </div>
           }
           <AiOutlineClose fontSize={24} className='cursor-pointer' onClick={() => handleSidebar('close')}

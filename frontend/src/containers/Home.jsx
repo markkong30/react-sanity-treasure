@@ -3,7 +3,6 @@ import { HiMenu } from 'react-icons/hi';
 import { AiOutlineClose } from 'react-icons/ai';
 import { Link, Route, Routes } from 'react-router-dom';
 import { Sidebar, UserProfile } from '../components';
-import Select from 'react-select'
 import { userQuery } from '../utils/query';
 import { client } from '../client';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +19,6 @@ const Home = () => {
 
   const scrollRef = useRef(null);
   const navigate = useNavigate();
-  const [chatUserOptions, setChatUserOptions] = useState([]);
 
 
   useEffect(() => {
@@ -36,14 +34,7 @@ const Home = () => {
       })
   }, [])
 
-  const fetchChatUsers = () => {
-    const query = `*[_type == 'user' && username !='${user.username}' ]`
 
-    client.fetch(query)
-      .then(data => {
-        console.log(data)
-      })
-  }
 
   const handleSidebar = (action) => {
     if (action == 'close') {
@@ -61,6 +52,8 @@ const Home = () => {
       // console.log(document.body.style.overflowY)
       document.body.style.overflowY = 'hidden';
       document.body.style.position = 'fixed';
+      document.querySelector('#sidebar').style.position = 'relative';
+      document.querySelector('#sidebar').style.overflowY = 'scroll';
       // scrollRef.current.style.overflowY = 'hidden';
     }
 
