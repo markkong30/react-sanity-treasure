@@ -44,7 +44,7 @@ const Home = () => {
       // document.body.style.overflowY = 'scroll';
       // document.body.style.position = 'relative';
 
-      scrollRef.current.style.overflowY = 'scroll';
+      // scrollRef.current.style.overflowY = 'scroll';
 
 
     } else {
@@ -54,7 +54,7 @@ const Home = () => {
       // document.body.style.position = 'fixed';
       // document.querySelector('#sidebar').style.position = 'relative';
       // document.querySelector('#sidebar').style.overflowY = 'hidden';
-      scrollRef.current.style.overflowY = 'hidden';
+      // scrollRef.current.style.overflowY = 'hidden';
     }
 
   }
