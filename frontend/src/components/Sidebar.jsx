@@ -70,7 +70,7 @@ const Sidebar = ({ user, setSidebarToggle, setShowChats, showChats }) => {
       {user && (
         <div className='relative'>
           <Link to={`user-profile/${user._id}`}
-            className='flex mt-7 mb-3 gap-3 p-2 items-center bg-white rounded-lg mx-3'
+            className='md:flex mt-7 mb-3 gap-3 p-2 items-center bg-white rounded-lg mx-3 hidden'
             onClick={closeSidebar}>
             <img src={user.image} className='w-10 h-10 rounded-full' alt="user-profile" />
             <p className='text-sm xl:text-base'>{user.username}</p>
@@ -78,7 +78,7 @@ const Sidebar = ({ user, setSidebarToggle, setShowChats, showChats }) => {
           <GoogleLogout
             clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
             render={(renderProps) => (
-              <div className='w-full mt-4 py-2 lborder-t border-gray-200'>
+              <div className='w-full mt-4 pt-2 pb-4 lborder-t border-gray-200'>
                 <button
                   type="button"
                   className='flex items-center bg-white ml-5 p-2 rounded-lg cursor-pointer outline-none'

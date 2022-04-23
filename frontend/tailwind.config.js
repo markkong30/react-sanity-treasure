@@ -54,10 +54,12 @@ module.exports = {
 					"0%": {
 						"-webkit-transform": "translateX(-200px)",
 						transform: "translateX(-200px)",
+						opacity: 0,
 					},
 					"100%": {
 						"-webkit-transform": "translateX(0px)",
 						transform: "translateX(0px)",
+						opacity: 1,
 					},
 				},
 

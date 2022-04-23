@@ -35,7 +35,6 @@ const PinDetail = ({ user }) => {
       client.fetch(query)
         .then(data => {
           setPinDetail(data[0])
-          console.log(data[0])
 
           if (data[0]) {
             query = recommendPinQuery(data[0]);

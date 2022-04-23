@@ -71,8 +71,8 @@ const Pin = ({ pin, setPins }) => {
   return (
     <div className='m-2'>
       <div
-        onMouseEnter={() => setPostHovered(true)}
-        onMouseLeave={() => setPostHovered(false)}
+        onMouseOver={() => setPostHovered(true)}
+        onMouseOut={() => setPostHovered(false)}
         onClick={() => navigate(`/pin-detail/${_id}`)}
         className='relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out hover:scale-105'
       >

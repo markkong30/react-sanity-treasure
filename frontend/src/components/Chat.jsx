@@ -12,6 +12,7 @@ const Chat = ({ user }) => {
   const [chat, setChat] = useState(null);
   const [chatUser, setChatUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('Initializing chatroom...')
   const { counterpart } = useParams();
 
   useEffect(() => {
@@ -32,7 +33,10 @@ const Chat = ({ user }) => {
       getOrCreateUser(user, chatUser, (chat) => {
         console.log(chat)
         setChat(chat);
-        setLoading(false);
+        setMessage('Loading messages...')
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000)
 
       });
     }
@@ -64,7 +68,7 @@ const Chat = ({ user }) => {
           </ChatEngineWrapper>
         </>
         :
-        <Spinner message={'Loading chat...'} />
+        <Spinner message={message} />
       }
 
     </div>
