@@ -22,6 +22,8 @@ const Chat = ({ user }) => {
       client.fetch(query)
         .then(data => {
           setChatUser(data[0])
+          setMessage('Loading messages...')
+
         })
 
     }
@@ -33,10 +35,7 @@ const Chat = ({ user }) => {
       getOrCreateUser(user, chatUser, (chat) => {
         console.log(chat)
         setChat(chat);
-        setMessage('Loading messages...')
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000)
+        setLoading(false);
 
       });
     }

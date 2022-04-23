@@ -1,21 +1,54 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { RiHomeFill } from 'react-icons/ri';
 import { BsFillHeartFill, BsMessenger } from 'react-icons/bs';
-import { IoIosArrowForward } from 'react-icons/io';
 import { AiOutlineLogout } from 'react-icons/ai';
-import logo from '../assets/logo.png';
 import treasure from '../assets/treasure.svg'
 import { categories } from '../utils/categories';
 import { GoogleLogout } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
+import ChatLists from './ChatLists';
+import { client } from '../client';
+import { chatUserQuery } from '../utils/query';
 
-const Sidebar = ({ user, setSidebarToggle, setShowChats, showChats }) => {
+
+const Sidebar = ({ user, handleSidebar, showChats, setShowChats }) => {
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+    if (showChats) {
+      console.log('here')
+      document.addEventListener('click', checkClickChat)
+    }
+
+    return () => {
+      document.removeEventListener('click', checkClickChat)
+    }
+
+  }, [showChats])
+
+  const checkClickChat = (e) => {
+    const activeChat = document.querySelector('.ce-active-chat-card');
+
+    if (activeChat.contains(e.target)) {
+      document.removeEventListener('click', checkClickChat)
+      const chatUsername = activeChat.firstChild.firstChild.innerText;
+
+      const query = chatUserQuery(chatUsername);
+
+      client.fetch(query)
+        .then(data => {
+          window.location.replace(`/chat/${data[0]._id}`);
+          setShowChats(false);
+        })
+
+    }
+  }
+
   const closeSidebar = () => {
-    if (setSidebarToggle !== 'undefined') {
-      setSidebarToggle(false)
+    if (handleSidebar !== undefined) {
+      handleSidebar('close')
     }
   }
 
@@ -48,14 +81,22 @@ const Sidebar = ({ user, setSidebarToggle, setShowChats, showChats }) => {
             <BsFillHeartFill className='opacity-75' color="red" />
             <span> Followed</span>
           </NavLink>
-          <button
-            className={showChats ? isActiveStyle : isNotActiveStyle}
-            onClick={() => setShowChats(!showChats)}>
-            <BsMessenger color='#0B86EE' className='' />
-            <span>Messages</span>
-          </button>
+          <div>
+            <button
+              className={showChats ? isActiveStyle : isNotActiveStyle}
+              onClick={() => setShowChats(!showChats)}>
+              <BsMessenger color='#0B86EE' className='' />
+              <span>Messages</span>
+            </button>
 
-          <h3 className="mt-2 px-5 text-base 2xl:text-xl">Discover categories</h3>
+            {showChats && user &&
+              <ChatLists showChats={showChats} user={user} handleSidebar={handleSidebar} />
+            }
+
+          </div>
+
+
+          <h3 className="mt-3 px-5 text-lg">Discover categories</h3>
           {categories.slice(0, categories.length - 1).map(category => (
             <NavLink to={`/category/${category.name}`}
               key={category.name}
