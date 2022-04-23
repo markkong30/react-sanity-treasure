@@ -33,7 +33,7 @@ const Home = () => {
 
   useEffect(() => {
     const userInfo = fetchUser();
-    fetchChatUsers();
+    // fetchChatUsers();
     scrollRef.current.scrollTo(0, 0);
 
     const query = userQuery(userInfo?.googleId);
