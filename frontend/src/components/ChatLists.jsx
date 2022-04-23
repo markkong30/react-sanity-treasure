@@ -25,7 +25,7 @@ const ChatLists = ({ user, handleSidebar }) => {
         for (const ele of data) {
           options = [...options, { value: ele.username, label: ele.username }];
         }
-        console.log(options)
+        setChatUserOptions(options)
       })
   }
 
@@ -39,18 +39,24 @@ const ChatLists = ({ user, handleSidebar }) => {
               <BsFillPersonPlusFill fontSize={24} />
             </div>
             :
-            <div className=''>
-              {/* <Select
-                defaultValue={colourOptions[0]}
-                isDisabled={isDisabled}
-                isLoading={isLoading}
-                isClearable={isClearable}
-                isRtl={isRtl}
-                isSearchable={isSearchable}
-                name="color"
-                options={colourOptions}
-              /> */}
+            <div className='w-full mr-3'>
+              <Select
+                isClearable
+                isSearchable
+                noOptionsMessage={() => 'User not found'}
+                options={chatUserOptions && chatUserOptions}
+                theme={(theme) => ({
+                  ...theme,
+                  colors: {
+                    ...theme.colors,
+                    primary25: '#FF8A80',
+                    primary50: '#FF8A80',
+                    primary: '#EF5350',
+                  },
+                })}
+              />
             </div>
+
           }
           <AiOutlineClose fontSize={24} className='cursor-pointer' onClick={() => handleSidebar('close')}
           />
