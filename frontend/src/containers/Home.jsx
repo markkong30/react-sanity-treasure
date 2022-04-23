@@ -51,14 +51,17 @@ const Home = () => {
       setToggleSidebar(false);
       // document.body.style.overflowY = 'scroll';
 
-      scrollRef.current.style.overflowY = 'scroll';
+      // scrollRef.current.style.overflowY = 'scroll';
       document.body.style.overflowY = 'scroll';
+      document.body.style.position = 'relative';
+
 
     } else {
       setToggleSidebar(true);
       // console.log(document.body.style.overflowY)
       document.body.style.overflowY = 'hidden';
-      scrollRef.current.style.overflowY = 'hidden';
+      document.body.style.position = 'fixed';
+      // scrollRef.current.style.overflowY = 'hidden';
     }
 
   }
