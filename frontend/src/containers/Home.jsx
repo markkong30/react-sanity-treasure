@@ -51,10 +51,13 @@ const Home = () => {
       setToggleSidebar(false);
       // document.body.style.overflowY = 'scroll';
 
-      scrollRef.current.style.overflowY = 'auto';
+      scrollRef.current.style.overflowY = 'scroll';
+      document.body.style.overflowY = 'scroll';
+
     } else {
       setToggleSidebar(true);
-      // document.body.style.overflowY = 'hidden';
+      // console.log(document.body.style.overflowY)
+      document.body.style.overflowY = 'hidden';
       scrollRef.current.style.overflowY = 'hidden';
     }
 
@@ -87,7 +90,7 @@ const Home = () => {
         )}
       </div>
 
-      <div className="pb-2 flex-1 h-screen overflow-y-scroll" ref={scrollRef}>
+      <div className="pb-2 flex-1 h-screen overflow-y-scroll relative" ref={scrollRef}>
         <Routes>
           <Route path="/user-profile/:userID" element={<UserProfile user={user && user} />}></Route>
           <Route path="/*" element={<Pins user={user && user} />}></Route>
