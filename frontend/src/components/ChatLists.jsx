@@ -9,6 +9,7 @@ import { client } from '../client';
 const ChatLists = ({ user, handleSidebar }) => {
   const [addChat, setAddChat] = useState(false);
   const [chatUserOptions, setChatUserOptions] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
     if (addChat) {
@@ -23,7 +24,7 @@ const ChatLists = ({ user, handleSidebar }) => {
     client.fetch(query)
       .then(data => {
         for (const ele of data) {
-          options = [...options, { value: ele.username, label: ele.username }];
+          options = [...options, { value: ele._id, label: ele.username }];
         }
         setChatUserOptions(options)
       })
@@ -34,32 +35,42 @@ const ChatLists = ({ user, handleSidebar }) => {
       <div className='chat-list fixed top-0 left-0 md:top- md:w-[300px] md:h-full z-[1000] md:ml-[195px] md:mt-[150px] overflow-y-scroll w-screen h-screen animate-slide-in'>
         <div className='flex justify-between items-center px-4 py-6 bg-white mr-[1px]'>
           {!addChat ?
-            <div className='flex gap-4 items-center cursor-pointer' onClick={() => setAddChat(true)}>
-              <h4 className='text-xl md:text-lg'>Messages</h4>
-              <BsFillPersonPlusFill fontSize={24} />
-            </div>
-            :
-            <div className='w-full mr-3'>
-              <Select
-                isClearable
-                isSearchable
-                noOptionsMessage={() => 'User not found'}
-                options={chatUserOptions && chatUserOptions}
-                theme={(theme) => ({
-                  ...theme,
-                  colors: {
-                    ...theme.colors,
-                    primary25: '#FF8A80',
-                    primary50: '#FF8A80',
-                    primary: '#EF5350',
-                  },
-                })}
+            <>
+              <div className='flex gap-4 items-center cursor-pointer' onClick={() => setAddChat(true)}>
+                <h4 className='text-xl md:text-lg'>Messages</h4>
+                <BsFillPersonPlusFill fontSize={24} />
+              </div>
+              <AiOutlineClose fontSize={24} className='cursor-pointer' onClick={() => handleSidebar('close')}
               />
-            </div>
+            </>
+            :
+            <>
+              <div className='w-full mr-4'>
+                <Select
+                  isClearable
+                  isSearchable
+                  noOptionsMessage={() => 'User not found'}
+                  options={chatUserOptions && chatUserOptions}
+                  onChange={(selected) => {
+                    setSelectedOption(selected);
+                  }}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary25: '#FF8A80',
+                      primary50: '#FF8A80',
+                      primary: '#EF5350',
+                    },
+                  })}
+                />
+              </div>
+              <BsFillPersonPlusFill className='cursor-pointer' fontSize={28} onClick={() => window.location.replace(`/chat/${selectedOption.value}`)} />
+
+            </>
 
           }
-          <AiOutlineClose fontSize={24} className='cursor-pointer' onClick={() => handleSidebar('close')}
-          />
+
         </div>
 
         <ChatEngineWrapper>

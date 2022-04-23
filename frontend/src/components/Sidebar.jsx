@@ -119,7 +119,7 @@ const Sidebar = ({ user, handleSidebar, showChats, setShowChats }) => {
           <GoogleLogout
             clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
             render={(renderProps) => (
-              <div className='w-full mt-4 pt-2 pb-4 lborder-t border-gray-200'>
+              <div className='w-full mt-4 pt-2 pb-4'>
                 <button
                   type="button"
                   className='flex items-center bg-white ml-5 p-2 rounded-lg cursor-pointer outline-none'

@@ -44,7 +44,7 @@ const Home = () => {
       // document.body.style.overflowY = 'scroll';
       // document.body.style.position = 'relative';
 
-      // scrollRef.current.style.overflowY = 'scroll';
+      scrollRef.current.style.overflowY = 'scroll';
 
 
     } else {
@@ -54,7 +54,7 @@ const Home = () => {
       // document.body.style.position = 'fixed';
       // document.querySelector('#sidebar').style.position = 'relative';
       // document.querySelector('#sidebar').style.overflowY = 'hidden';
-      // scrollRef.current.style.overflowY = 'hidden';
+      scrollRef.current.style.overflowY = 'hidden';
     }
 
   }
@@ -67,7 +67,7 @@ const Home = () => {
         <Sidebar user={user && user} handleSidebar={handleSidebar} showChats={showChats} setShowChats={setShowChats} />
       </div>
       <div className="flex md:hidden flex-row">
-        <div className="fixed z-[10] p-2 w-full flex flex-row justify-between items-center shadow-md bg-white">
+        <div className="p-2 w-full flex flex-row justify-between items-center shadow-md bg-white">
           <HiMenu fontSize={40} className='cursor-pointer' onClick={() => handleSidebar('open')} />
           <Link to='/'>
             <img src={treasure} className='w-40' alt="" />
@@ -77,7 +77,7 @@ const Home = () => {
           </Link>
         </div>
         {toggleSidebar && (
-          <div className="fixed w-screen bg-white h-screen overflow-y-auto shadow-md z-10 animate-slide-in">
+          <div className="fixed w-5/6 bg-white h-screen overflow-y-scroll md:overflow-y-auto shadow-md z-10 animate-slide-in">
             <div className="absolute w-full flex justify-end items-center p-4 mt-2">
               <AiOutlineClose fontSize={28} className='cursor-pointer' onClick={() => handleSidebar('close')} />
             </div>

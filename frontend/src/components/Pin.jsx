@@ -71,11 +71,11 @@ const Pin = ({ pin, setPins }) => {
   return (
     <div className='m-2' id="pin">
       <div
-        onTouchEnd={() => navigate(`/pin-detail/${_id}`)}
-        onMouseOver={() => setPostHovered(true)}
-        onMouseOut={() => setPostHovered(false)}
+        // onTouchEnd={() => navigate(`/pin-detail/${_id}`)}
+        onMouseOver={() => { if (window.innerWidth > 768) setPostHovered(true) }}
+        onMouseOut={() => { if (window.innerWidth > 768) setPostHovered(false) }}
         onClick={() => navigate(`/pin-detail/${_id}`)}
-        className='relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out hover:scale-105'
+        className='relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out md:hover:scale-105'
       >
         <img src={urlFor(image)} className='rounded-lg w-full object-cover' alt="" />
         {postHovered && (
