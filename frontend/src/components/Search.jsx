@@ -10,7 +10,7 @@ const Search = ({ searchTerm }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let search = setTimeout(fetchSearchs, 1000);
+    let search = setTimeout(fetchSearchs, 500);
 
     return () => clearTimeout(search)
 

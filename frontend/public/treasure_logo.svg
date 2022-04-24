@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 -5 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Uploaded to SVGRepo https://www.svgrepo.com -->
+    <title>camera</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Vivid.JS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Vivid-Icons" transform="translate(-667.000000, -336.000000)">
+            <g id="Icons" transform="translate(37.000000, 169.000000)">
+                <g id="camera" transform="translate(624.000000, 156.000000)">
+                    <g transform="translate(6.000000, 11.000000)">
+                        <rect id="Rectangle-path" fill="#FF6E6E" fill-rule="nonzero" x="0" y="4" width="36" height="22"></rect>
+                        <path d="M18,8 C21.8659932,8 25,11.1340068 25,15 C25,18.8659932 21.8659932,22 18,22 C14.1340068,22 11,18.8659932 11,15 C11,11.1340068 14.1340068,8 18,8 Z M18,12 C19.6568542,12 21,13.3431458 21,15 C21,16.6568542 19.6568542,18 18,18 C16.3431458,18 15,16.6568542 15,15 C15,13.3431458 16.3431458,12 18,12 Z M29.5,8 C30.3284271,8 31,8.67157288 31,9.5 C31,10.3284271 30.3284271,11 29.5,11 C28.6715729,11 28,10.3284271 28,9.5 C28,8.67157288 28.6715729,8 29.5,8 Z M4,4 L8,0 L14,0 L18,4 L4,4 Z" id="Shape" fill="#0C0058"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
