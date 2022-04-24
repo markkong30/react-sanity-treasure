@@ -14,8 +14,10 @@ const FollowedFeed = ({ user }) => {
       setLoading(true);
 
       let followingUsers = [];
-      for (const ele of user.following) {
-        followingUsers = [...followingUsers, ...[`'${ele.userID}'`]]
+      if (user.following) {
+        for (const ele of user.following) {
+          followingUsers = [...followingUsers, ...[`'${ele.userID}'`]]
+        }
       }
 
       const query = followedQuery(followingUsers);
@@ -35,7 +37,7 @@ const FollowedFeed = ({ user }) => {
     return <Spinner message="We are adding new ideas to your feed!" />
   }
 
-  if (!pins?.length) return <h2>Sorry, no pins available...</h2>
+  if (!pins?.length) return <h2 className='ml-2' >No pins posted for your followed users...</h2>
 
   return (
     <div>

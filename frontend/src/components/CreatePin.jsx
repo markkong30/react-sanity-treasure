@@ -51,10 +51,12 @@ const CreatePin = ({ user }) => {
 
   }, [formData, category, imageAsset])
 
-  const uploadImage = e => {
+  const uploadImage = (e, file = null) => {
     setLoading(true);
-
-    const file = e.target.files[0];
+    if (file == null) {
+      file = e.target.files[0];
+    }
+    console.log(file)
     client.assets
       .upload('image', file, { contentType: file.type, filename: e.target.name })
       .then(doc => {
@@ -64,6 +66,29 @@ const CreatePin = ({ user }) => {
       .catch(err => {
         console.log(err)
       })
+  }
+
+  function dropHandler(ev) {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+    let file;
+
+    if (ev.dataTransfer.items) {
+      // Use DataTransferItemList interface to access the file(s)
+      for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+        // If dropped items aren't files, reject them
+        if (ev.dataTransfer.items[i].kind === 'file') {
+          file = ev.dataTransfer.items[i].getAsFile();
+          console.log('... file[' + i + '].name = ' + file.name);
+        }
+      }
+    }
+
+    uploadImage(ev, file)
+  }
+  function dragOverHandler(ev) {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
   }
 
   const updateForm = e => {
@@ -110,19 +135,22 @@ const CreatePin = ({ user }) => {
           <div className="flex justify-center items-center flex-col border-2 border-dotted border-gray-300 p-3 w-full h-420">
             {loading && <Spinner />}
             {!imageAsset ?
-              <label className='cursor-copy'>
-                <div className="flex flex-col items-center justify-center  h-full">
+              <label className='cursor-copy'  >
+                <div className="flex flex-col items-center justify-center  h-full" onDrop={dropHandler} onDragOver={dragOverHandler}>
                   <div className="flex flex-col justify-center items-center">
-                    <p className="font-bold text-2xl">
-                      <AiOutlineCloudUpload />
+                    <p className="font-bold text-2xl mb-4">
+                      <AiOutlineCloudUpload fontSize={40} />
                     </p>
-                    <p className="text-lg">Click to upload</p>
+                    <p className="text-lg">Drag &#38; Drop</p>
+                    <p className="text-base my-3">or</p>
+                    <button className="text-lg px-4 py-2 rounded-lg bg-red-400 text-white" onClick={() => document.querySelector('#upload').click()}>Browse File</button>
                   </div>
                   <p className="mt-32 text-gray-400">
                     Supported file: JPG, SVG, PNG, GIF
                   </p>
                 </div>
                 <input
+                  id='upload'
                   type="file"
                   accept="image/*"
                   name="upload-image"
@@ -145,7 +173,7 @@ const CreatePin = ({ user }) => {
         </div>
         <div className="flex flex-1 flex-col gap-6 mt-5 w-full lg:pl-5" ref={form}>
           <input type="text" name="title" value={title}
-            placeholder='Add your title here'
+            placeholder='Add your title'
             onChange={updateForm}
             className='outline-none text-2xl sm:text-3xl font-bold border-b-2 border-gray-200 p-2 input' />
           {user && (
@@ -171,7 +199,7 @@ const CreatePin = ({ user }) => {
             name="destination"
             value={destination}
             onChange={updateForm}
-            placeholder="Add a destination link"
+            placeholder="Add an article link"
             className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2 input"
           />
 
@@ -219,7 +247,7 @@ const CreatePin = ({ user }) => {
         </div>
       </div>
 
-    </div>
+    </div >
   );
 };
 

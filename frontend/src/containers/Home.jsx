@@ -37,6 +37,11 @@ const Home = () => {
 
 
   const handleSidebar = (action) => {
+    if (action == 'closeMessage') {
+      return setShowChats(false)
+    }
+
+
     if (action == 'close') {
       setShowChats(false);
       setToggleSidebar(false);
@@ -77,7 +82,7 @@ const Home = () => {
           </Link>
         </div>
         {toggleSidebar && (
-          <div className="fixed w-5/6 bg-white h-screen overflow-y-scroll md:overflow-y-auto shadow-md z-10 animate-slide-in">
+          <div className="fixed w-full bg-white h-screen overflow-y-scroll md:overflow-y-auto shadow-md z-10 animate-slide-in">
             <div className="absolute w-full flex justify-end items-center p-4 mt-2">
               <AiOutlineClose fontSize={28} className='cursor-pointer' onClick={() => handleSidebar('close')} />
             </div>
