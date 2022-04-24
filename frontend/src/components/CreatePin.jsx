@@ -35,9 +35,11 @@ const CreatePin = ({ user }) => {
   const [category, setCategory] = useState(null)
   const [imageAsset, setImageAsset] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [enableSubmit, setEnableSubmit] = useState(false)
+  const [enableSubmit, setEnableSubmit] = useState(false);
+  const [wrongImageType, setWrongImageType] = useState(false);
   const navigate = useNavigate();
   const form = useRef();
+  const imageInput = useRef();
 
   useEffect(() => {
     const inputs = [...form.current.querySelectorAll('.input')];
@@ -68,24 +70,28 @@ const CreatePin = ({ user }) => {
       })
   }
 
-  function dropHandler(ev) {
+  function dropHandler(e) {
     // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
-    let file;
+    e.preventDefault();
+    let image;
+    const imageTypes = ['image/png', 'image/gif', 'image/jpeg', 'image/svg',];
 
-    if (ev.dataTransfer.items) {
-      // Use DataTransferItemList interface to access the file(s)
-      for (var i = 0; i < ev.dataTransfer.items.length; i++) {
-        // If dropped items aren't files, reject them
-        if (ev.dataTransfer.items[i].kind === 'file') {
-          file = ev.dataTransfer.items[i].getAsFile();
-          console.log('... file[' + i + '].name = ' + file.name);
-        }
+    if (e.dataTransfer && e.dataTransfer.files) {
+      // e.dataTransfer.files is a FileList
+      // e.dataTransfer.files[0].type is a Blob.type
+      const fileType = e.dataTransfer.files[0].type;
+      if (imageTypes.includes(fileType)) {
+        image = e.dataTransfer.files[0];
+        setWrongImageType(false);
+        return uploadImage(e, image)
+
       }
     }
+    setLoading(false);
+    return setWrongImageType(true);
 
-    uploadImage(ev, file)
   }
+
   function dragOverHandler(ev) {
     // Prevent default behavior (Prevent file from being opened)
     ev.preventDefault();
@@ -133,7 +139,15 @@ const CreatePin = ({ user }) => {
       <div className="flex flex-col lg:flex-row justify-center items-center bg-white p-3 lg:p-5 w-full lg:w-4/5">
         <div className="bg-secondaryColor p-3 flex flex-0.7 w-full">
           <div className="flex justify-center items-center flex-col border-2 border-dotted border-gray-300 p-3 w-full h-420">
-            {loading && <Spinner />}
+            {loading && (
+              <Spinner />
+            )}
+            {
+              wrongImageType && (
+                <p className='text-red-500 text-lg'>Wrong file type!</p>
+              )
+            }
+
             {!imageAsset ?
               <label className='cursor-copy'  >
                 <div className="flex flex-col items-center justify-center  h-full" onDrop={dropHandler} onDragOver={dragOverHandler}>
@@ -143,14 +157,14 @@ const CreatePin = ({ user }) => {
                     </p>
                     <p className="text-lg">Drag &#38; Drop</p>
                     <p className="text-base my-3">or</p>
-                    <button className="text-lg px-4 py-2 rounded-lg bg-red-400 text-white" onClick={() => document.querySelector('#upload').click()}>Browse File</button>
+                    <button className="text-lg px-4 py-2 rounded-lg bg-red-400 text-white" onClick={() => imageInput.current.click()}>Browse File</button>
                   </div>
                   <p className="mt-32 text-gray-400">
                     Supported file: JPG, SVG, PNG, GIF
                   </p>
                 </div>
                 <input
-                  id='upload'
+                  ref={imageInput}
                   type="file"
                   accept="image/*"
                   name="upload-image"

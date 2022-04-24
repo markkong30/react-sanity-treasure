@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { RiHomeFill } from 'react-icons/ri';
 import { BsFillHeartFill, BsMessenger } from 'react-icons/bs';
@@ -14,11 +14,10 @@ import { chatUserQuery } from '../utils/query';
 
 const Sidebar = ({ user, handleSidebar, showChats, setShowChats }) => {
   const navigate = useNavigate();
-
+  const chatListRef = useRef();
 
   useEffect(() => {
     if (showChats) {
-      console.log('here')
       document.addEventListener('click', checkClickChat)
     }
 
@@ -29,9 +28,13 @@ const Sidebar = ({ user, handleSidebar, showChats, setShowChats }) => {
   }, [showChats])
 
   const checkClickChat = (e) => {
-    const activeChat = document.querySelector('.ce-active-chat-card');
+    const activeChat = chatListRef.current.querySelector('.ce-active-chat-card');
+    // const activeChat = e.target.closest('.ce-chat-title-text').firstChild.innerText
 
+    console.log(activeChat, e.target)
     if (activeChat.contains(e.target)) {
+      console.log('con')
+
       document.removeEventListener('click', checkClickChat)
       const chatUsername = activeChat.firstChild.firstChild.innerText;
 
@@ -42,7 +45,6 @@ const Sidebar = ({ user, handleSidebar, showChats, setShowChats }) => {
           window.location.replace(`/chat/${data[0]._id}`);
           setShowChats(false);
         })
-
     }
   }
 
@@ -90,7 +92,9 @@ const Sidebar = ({ user, handleSidebar, showChats, setShowChats }) => {
             </button>
 
             {showChats && user &&
-              <ChatLists showChats={showChats} user={user} handleSidebar={handleSidebar} />
+              <div ref={chatListRef}>
+                <ChatLists showChats={showChats} user={user} handleSidebar={handleSidebar} />
+              </div>
             }
 
           </div>

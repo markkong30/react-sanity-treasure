@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsFillPersonPlusFill } from 'react-icons/bs';
 import { ChatEngineWrapper, Socket, ChatList } from 'react-chat-engine';
@@ -11,6 +11,8 @@ const ChatLists = ({ user, handleSidebar }) => {
   const [chatUserOptions, setChatUserOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
 
+  const chatList = useRef();
+
   useEffect(() => {
     if (addChat) {
       fetchChatUsers();
@@ -21,7 +23,7 @@ const ChatLists = ({ user, handleSidebar }) => {
   const fetchChatUsers = () => {
     const query = `*[_type == 'user' && username !='${user.username}' ]`;
 
-    const existingUsers = [...document.querySelectorAll('.ce-chat-title-text>div:first-child')].map(ele => ele.innerText);
+    const existingUsers = [...chatList.current.querySelectorAll('.ce-chat-title-text>div:first-child')].map(ele => ele.innerText);
     console.log(existingUsers)
 
 
@@ -59,7 +61,7 @@ const ChatLists = ({ user, handleSidebar }) => {
   }
 
   return (
-    <div>
+    <div ref={chatList}>
       <div className='chat-list fixed top-0 left-0 md:top- md:w-[300px] md:h-full z-[1000] md:ml-[195px] md:mt-[150px] overflow-y-scroll w-4/5 h-screen animate-slide-in'>
         <div className='flex justify-between items-center px-4 py-6 bg-white mr-[1px]'>
           {!addChat ?
