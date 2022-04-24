@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { AiOutlineLogout, AiFillMessage } from 'react-icons/ai';
 import { BsMessenger } from 'react-icons/bs';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -11,6 +11,8 @@ import { client, urlFor } from '../client';
 import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
 import { fetchUser } from '../utils/fetchUser';
+import UserContext from '../context/UserContext';
+
 
 const UserProfile = () => {
   const [user, setUser] = useState();
@@ -20,6 +22,8 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const { userID } = useParams();
   const accountUser = fetchUser();
+
+  const { fetchUserInfo } = useContext(UserContext);
 
   const activeBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-32 outline-none';
   const notActiveBtnStyles = 'bg-gray-100 mr-4 text-black font-bold p-2 rounded-full w-32 outline-none';
@@ -56,7 +60,8 @@ const UserProfile = () => {
       .then(data => {
         console.log(data)
         setUser(data[0]);
-        setFollowed(data[0].follower?.find(ele => accountUser.googleId == ele.userID) !== undefined)
+        setFollowed(data[0].follower?.find(ele => accountUser.googleId == ele.userID) !== undefined);
+        fetchUserInfo(accountUser.googleId);
       })
   }
 
@@ -112,6 +117,7 @@ const UserProfile = () => {
           getUserInfo();
         })
     }
+
   }
 
   const logout = () => {

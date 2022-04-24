@@ -1,67 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { HiMenu } from 'react-icons/hi';
 import { AiOutlineClose } from 'react-icons/ai';
 import { Link, Route, Routes } from 'react-router-dom';
 import { Sidebar, UserProfile } from '../components';
-import { userQuery } from '../utils/query';
-import { client } from '../client';
-import { useNavigate } from 'react-router-dom';
 import Pins from './Pins';
 import { fetchUser } from '../utils/fetchUser';
 import treasure from '../assets/treasure.svg'
 import './Home.css'
+import UserContext from '../context/UserContext';
 
 
 const Home = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
-  const [user, setUser] = useState(null);
   const [showChats, setShowChats] = useState(false);
 
   const scrollRef = useRef(null);
-  const navigate = useNavigate();
-
+  const { user, fetchUserInfo } = useContext(UserContext);
 
   useEffect(() => {
     const userInfo = fetchUser();
-    // fetchChatUsers();
     scrollRef.current.scrollTo(0, 0);
 
-    const query = userQuery(userInfo?.googleId);
+    fetchUserInfo(userInfo?.googleId);
 
-    client.fetch(query)
-      .then(data => {
-        setUser(data[0])
-      })
   }, [])
-
-
 
   const handleSidebar = (action) => {
     if (action == 'closeMessage') {
       return setShowChats(false)
     }
 
-
     if (action == 'close') {
       setShowChats(false);
       setToggleSidebar(false);
-      // document.body.style.overflowY = 'scroll';
-      // document.body.style.overflowY = 'scroll';
-      // document.body.style.position = 'relative';
-
-      // scrollRef.current.style.overflowY = 'scroll';
-
-
     } else {
       setToggleSidebar(true);
-      // console.log(document.body.style.overflowY)
-      // document.body.style.overflowY = 'hidden';
-      // document.body.style.position = 'fixed';
-      // document.querySelector('#sidebar').style.position = 'relative';
-      // document.querySelector('#sidebar').style.overflowY = 'hidden';
-      // scrollRef.current.style.overflowY = 'hidden';
     }
-
   }
 
   return (

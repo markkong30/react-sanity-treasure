@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { client } from '../client';
 import { categories } from '../utils/categories';
 import { followedQuery } from '../utils/query';
@@ -8,6 +9,7 @@ import Spinner from './Spinner';
 const FollowedFeed = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [pins, setPins] = useState(null);
+
 
   useEffect(() => {
     if (user) {

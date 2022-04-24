@@ -15,7 +15,8 @@ const PinDetail = ({ user }) => {
   const [pinDetail, setPinDetail] = useState(null);
   const [comment, setComment] = useState('');
   const [addingComment, setAddingComment] = useState(false);
-  const [alreadySaved, setAlreadySaved] = useState(false)
+  const [alreadySaved, setAlreadySaved] = useState(false);
+
 
   useEffect(() => {
     fetchPinDetails();

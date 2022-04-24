@@ -109,7 +109,7 @@ const Sidebar = ({ user, handleSidebar, showChats, setShowChats }) => {
         </div>
       </div>
       {user && (
-        <div className='relative'>
+        <div className=''>
           <Link to={`user-profile/${user._id}`}
             className='md:flex mt-7 mb-3 gap-3 p-2 items-center bg-white rounded-lg mx-3 hidden'
             onClick={closeSidebar}>

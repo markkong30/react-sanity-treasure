@@ -20,13 +20,41 @@ const ChatLists = ({ user, handleSidebar }) => {
 
   const fetchChatUsers = () => {
     const query = `*[_type == 'user' && username !='${user.username}' ]`;
-    let options = [];
+
+    const existingUsers = [...document.querySelectorAll('.ce-chat-title-text>div:first-child')].map(ele => ele.innerText);
+    console.log(existingUsers)
+
+
+    let combinedOptions = [];
+    let followers = [];
+    let others = [];
+
     client.fetch(query)
       .then(data => {
+        console.log(data)
+
         for (const ele of data) {
-          options = [...options, { value: ele._id, label: ele.username }];
+          if (!existingUsers.includes(ele.username)) {
+            if (ele.follower.filter(ele => ele.userID == user._id).length) {
+              followers = [...followers, { value: ele._id, label: ele.username }]
+            } else {
+              others = [...others, { value: ele._id, label: ele.username }]
+            }
+          }
+
+          // options = [...options, { value: ele._id, label: ele.username }];
         }
-        setChatUserOptions(options)
+        combinedOptions = [
+          {
+            label: 'Followers',
+            options: followers,
+          },
+          {
+            label: 'Others',
+            options: others,
+          }
+        ];
+        setChatUserOptions(combinedOptions)
       })
   }
 

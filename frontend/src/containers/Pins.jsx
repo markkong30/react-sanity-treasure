@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Navbar, Feed, PinDetail, CreatePin, Search, FollowedFeed } from '../components';
 import Chat from '../components/Chat';
+
 
 const Pins = ({ user }) => {
   const [searchTerm, setSearchTerm] = useState('');

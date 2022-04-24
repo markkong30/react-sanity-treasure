@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { UserProvider } from "./context/UserContext";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./containers/Login";
 import Home from "./containers/Home";
@@ -14,10 +15,12 @@ function App() {
 	}, []);
 
 	return (
-		<Routes>
-			<Route path="/login" element={<Login />}></Route>
-			<Route path="/*" element={<Home />}></Route>
-		</Routes>
+		<UserProvider>
+			<Routes>
+				<Route path="/login" element={<Login />}></Route>
+				<Route path="/*" element={<Home />}></Route>
+			</Routes>
+		</UserProvider>
 	);
 }
 
