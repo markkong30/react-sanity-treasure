@@ -115,7 +115,7 @@ const Sidebar = ({ user, handleSidebar, showChats, setShowChats }) => {
       {user && (
         <div className=''>
           <Link to={`user-profile/${user._id}`}
-            className='md:flex mt-7 mb-3 gap-3 p-2 items-center bg-white rounded-lg mx-3 hidden'
+            className='flex mt-7 mb-3 gap-3 p-2 items-center bg-white rounded-lg mx-3'
             onClick={closeSidebar}>
             <img src={user.image} className='w-10 h-10 rounded-full' alt="user-profile" />
             <p className='text-sm xl:text-base'>{user.username}</p>
