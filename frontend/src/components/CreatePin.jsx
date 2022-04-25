@@ -10,7 +10,8 @@ import { useEffect } from 'react';
 
 const getOptions = () => {
   let options = [];
-  function capitalize(s) {
+
+  const capitalize = s => {
     return s && s[0].toUpperCase() + s.slice(1);
   }
 
@@ -104,6 +105,8 @@ const CreatePin = ({ user }) => {
   }
 
   const savePin = () => {
+    setEnableSubmit(false);
+
     const doc = {
       _type: 'pin',
       title,
@@ -127,6 +130,10 @@ const CreatePin = ({ user }) => {
     client.create(doc)
       .then(() => {
         navigate('/')
+      })
+      .catch(err => {
+        setEnableSubmit(true);
+        alert(err);
       })
   }
 

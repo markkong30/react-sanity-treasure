@@ -137,7 +137,7 @@ const PinDetail = ({ user }) => {
                   <span>{pinDetail?.save.length == 1 ? ' like' : 'likes'}</span>
                 </h4>
                 :
-                <h4>Be the first one to like...</h4>
+                <h4>Be the first to like...</h4>
 
               }
             </div>
@@ -195,11 +195,17 @@ const PinDetail = ({ user }) => {
                 placeholder='Leave your comment...'
                 onChange={e => setComment(e.target.value)} />
             </div>
-
-            <button className=' bg-red-500 text-white rounded-full px-6 py-2 font-semibold text-base outline-none'
-              onClick={addComment}>
-              {addingComment ? 'Posting...' : 'Post'}
-            </button>
+            {addingComment ?
+              <button className=' bg-red-500 text-white rounded-full px-6 py-2 font-semibold text-base outline-none pointer-events-none'
+                onClick={addComment}>
+                Posting...
+              </button>
+              :
+              <button className=' bg-red-500 text-white rounded-full px-6 py-2 font-semibold text-base outline-none'
+                onClick={addComment}>
+                Post
+              </button>
+            }
           </div>
         </div>
       </div >

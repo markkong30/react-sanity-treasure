@@ -65,6 +65,11 @@ const Login = () => {
       })
   }
 
+  const failureLogin = () => {
+    setLoggingIn(false);
+
+  }
+
   return (
     <div className='flex justify-start items-center flex-col h-screen'>
       <div className="relative w-full h-full">
@@ -75,7 +80,7 @@ const Login = () => {
             <img src={treasureMono} width="150px" alt="logo" />
           </div>
           {loggingIn ?
-            <Spinner message="Redirecting" color='white' />
+            <Spinner message="Redirecting..." color='text-white' />
             :
             <div className="shadow-2x1">
               <GoogleLogin
@@ -91,7 +96,7 @@ const Login = () => {
                   </button>
                 )}
                 onSuccess={responseGoogle}
-                onFailure={responseGoogle}
+                onFailure={failureLogin}
                 cookiePolicy='single_host_origin'
               />
             </div>

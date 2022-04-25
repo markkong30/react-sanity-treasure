@@ -122,7 +122,8 @@ const UserProfile = () => {
 
   const logout = () => {
     localStorage.clear();
-    navigate('/login');
+    navigate('/login', { replace: true })
+
   }
 
 

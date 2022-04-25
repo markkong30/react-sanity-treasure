@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { HiMenu } from 'react-icons/hi';
 import { AiOutlineClose } from 'react-icons/ai';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { Sidebar, UserProfile } from '../components';
 import Pins from './Pins';
 import { fetchUser } from '../utils/fetchUser';
@@ -13,6 +13,7 @@ import UserContext from '../context/UserContext';
 const Home = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [showChats, setShowChats] = useState(false);
+  const navigate = useNavigate();
 
   const scrollRef = useRef(null);
   const { user, fetchUserInfo } = useContext(UserContext);
@@ -20,6 +21,9 @@ const Home = () => {
   useEffect(() => {
     const userInfo = fetchUser();
     scrollRef.current.scrollTo(0, 0);
+    if (userInfo == undefined) {
+      navigate('/login', { replace: true });
+    }
 
     fetchUserInfo(userInfo?.googleId);
 
