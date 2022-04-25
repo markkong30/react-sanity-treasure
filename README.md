@@ -10,19 +10,19 @@ Libaries: Tailwind, Chat Engine, Google Login, etc...
 
 Pages:
 
-User Login / Signup
-Home Page
-Categoires Filter
-Followed Filter
-Direct Messages
-User Profile
-Post Detail Page
-Create Post
+- User Login / Signup
+- Home Page
+- Categoires Filter
+- Followed Filter
+- Direct Messages
+- User Profile
+- Post Detail Page
+- Create Post
 
 Backend API:
 
-Google User Login
-Follow and Like System
-Direct Messages System
-Post CRUD
+- Google User Login
+- Follow and Like System
+- Direct Messages System
+- Post CRUD
 
