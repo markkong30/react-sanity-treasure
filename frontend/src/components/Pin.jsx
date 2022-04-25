@@ -11,7 +11,7 @@ import { fetchUser } from '../utils/fetchUser';
 const Pin = ({ pin, setPins }) => {
   const { postedBy, image, _id, destination, save } = pin;
   const [postHovered, setPostHovered] = useState(false);
-  const [alreadySaved, setAlreadySaved] = useState(false)
+  const [alreadySaved, setAlreadySaved] = useState(false);
   const user = fetchUser();
   const getInitialSaved = () => save?.find(item => {
     if (item.postedBy !== null) {
@@ -71,13 +71,13 @@ const Pin = ({ pin, setPins }) => {
   return (
     <div className='m-2' id="pin">
       <div
-        // onTouchEnd={() => navigate(`/pin-detail/${_id}`)}
         onMouseOver={() => { if (window.innerWidth > 768) setPostHovered(true) }}
         onMouseOut={() => { if (window.innerWidth > 768) setPostHovered(false) }}
         onClick={() => navigate(`/pin-detail/${_id}`)}
         className='relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out md:hover:scale-105'
       >
-        <img src={urlFor(image)} className='rounded-lg w-full object-cover' alt="" />
+        <img src={urlFor(image)} className={`rounded-lg w-full object-cover `} alt="pin-img" />
+
         {postHovered && (
           <div className="absolute top-0 w-full h-full flex flex-col justify-between p-2 z-10">
             <div className="flex items-center justify-between">

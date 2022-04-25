@@ -18,7 +18,9 @@ const Feed = () => {
       .then(data => {
         // console.log(data)
         setPins(data);
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500)
       })
 
   }, [categoryId])
