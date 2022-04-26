@@ -138,7 +138,7 @@ const PinDetail = ({ user }) => {
   return (
     <>
       <div className='flex flex-col xl:flex-row m-auto bg-white max-w-[1500px] rounded-[32px]' >
-        <div className="flex justify-center items-center md:items-start flex-initial lg:pt-5">
+        <div className="flex justify-center items-center md:items-start flex-initial xl:pt-5">
           <img src={pinDetail?.image && urlFor(pinDetail.image)}
             className='rounded-t-3xl rounded-b-lg'
             alt="image" />

@@ -8,6 +8,7 @@ import { client } from '../client';
 
 const ChatLists = ({ user, handleSidebar }) => {
   const [addChat, setAddChat] = useState(false);
+  const [showAddChatBtn, setShowAddChatBtn] = useState(false);
   const [chatUserOptions, setChatUserOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -69,7 +70,8 @@ const ChatLists = ({ user, handleSidebar }) => {
             <>
               <div className='flex gap-4 items-center cursor-pointer' onClick={() => setAddChat(true)}>
                 <h4 className='text-xl md:text-lg'>Messages</h4>
-                <BsFillPersonPlusFill fontSize={24} />
+
+                {showAddChatBtn && <BsFillPersonPlusFill fontSize={24} />}
               </div>
               <AiOutlineClose fontSize={24} className='cursor-pointer' onClick={() => handleSidebar('closeMessage')}
               />
@@ -110,7 +112,8 @@ const ChatLists = ({ user, handleSidebar }) => {
             projectID={process.env.REACT_APP_CHAT_PROJECT_ID}
             userName={user?.username}
             userSecret={user?._id}
-          // onGetMessages={() => console.log('get')}
+            // onGetMessages={() => console.log('get')}
+            onGetChats={() => setShowAddChatBtn(true)}
           />
 
           <ChatList />
