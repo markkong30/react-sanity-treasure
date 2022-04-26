@@ -1,4 +1,4 @@
-# #Treasure: React PWA Social Media App
+# Treasure: React PWA Social Media App
 
 <img src="https://user-images.githubusercontent.com/94219999/165226548-88cc2001-f55f-46a9-ae49-848fad05de34.png" alt="treasure_icon" width="200"/>
 
