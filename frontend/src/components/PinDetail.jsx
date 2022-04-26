@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { MdDownloadForOffline } from 'react-icons/md';
+import { MdDownloadForOffline, MdDelete } from 'react-icons/md';
 import { BsFillArrowUpRightCircleFill, BsHeart, BsFillHeartFill } from 'react-icons/bs';
-import { Link, useParams } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { client, urlFor } from '../client';
@@ -15,12 +16,13 @@ const PinDetail = ({ user }) => {
   const [pinDetail, setPinDetail] = useState(null);
   const [comment, setComment] = useState('');
   const [addingComment, setAddingComment] = useState(false);
+  const [deletingComment, setDeletingComment] = useState(false);
   const [alreadySaved, setAlreadySaved] = useState(false);
 
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPinDetails();
-    console.log(user)
   }, [pinId])
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const PinDetail = ({ user }) => {
       client.fetch(query)
         .then(data => {
           setPinDetail(data[0])
+          console.log(data[0])
 
           if (data[0]) {
             query = recommendPinQuery(data[0]);
@@ -107,6 +110,26 @@ const PinDetail = ({ user }) => {
     }
   }
 
+  const deleteComment = (_key) => {
+    setDeletingComment(true);
+
+    client.patch(pinId)
+      .unset([`comments[_key=="${_key}"]`])
+      .commit()
+      .then(() => {
+        fetchPinDetails();
+        setDeletingComment(false);
+
+      })
+  }
+
+  const deletePin = e => {
+    client.delete(pinId)
+      .then(() => {
+        navigate('/');
+      })
+  }
+
 
   if (!pinDetail) return <Spinner message={"Loading pin detail..."} />
 
@@ -146,13 +169,22 @@ const PinDetail = ({ user }) => {
                 className='rounded-2xl bg-gray-100 px-4 py-2 '>
                 Check the article
               </a>
-              <a
-                href={`${pinDetail.image.asset.url}?dl=`}
-                download
-                className="bg-secondaryColor p-2 text-xl rounded-full flex items-center justify-center text-dark opacity-75"
-              >
-                <MdDownloadForOffline />
-              </a>
+              {pinDetail?.postedBy.username == user?.username ?
+                <button
+                  onClick={deletePin}
+                  className="bg-secondaryColor p-2 text-xl rounded-full flex items-center justify-center text-dark opacity-75"
+                >
+                  < MdDelete />
+                </button>
+                :
+                <a
+                  href={`${pinDetail.image.asset.url}?dl=`}
+                  download
+                  className="bg-secondaryColor p-2 text-xl rounded-full flex items-center justify-center text-dark opacity-75"
+                >
+                  <MdDownloadForOffline />
+                </a>
+              }
             </div>
 
           </div>
@@ -167,19 +199,28 @@ const PinDetail = ({ user }) => {
           <h2 className="mt-10 text-2xl">Comments</h2>
           <div className="min-h-[50px] max-h-570 overflow-y-auto">
             {pinDetail?.comments?.map((item) => (
-              <div className="flex gap-2 mt-5 items-center bg-white rounded-lg" key={uuidv4()}>
-                <Link to={`/user-profile/${item.postedBy?._id}`}>
-                  <img
-                    src={item.postedBy?.image}
-                    className="w-10 h-10 mr-2 rounded-full cursor-pointer"
-                    alt="user-profile"
-                  />
-                </Link>
-                <div className="flex flex-col">
-                  <p className="font-bold text-sm">{item.postedBy?.username}</p>
-                  <p>{item.comment}</p>
+              <div className='flex justify-between items-center mt-5' key={uuidv4()}>
+                <div className="flex gap-2items-center bg-white rounded-lg">
+                  <Link to={`/user-profile/${item.postedBy?._id}`}>
+                    <img
+                      src={item.postedBy?.image}
+                      className="w-10 h-10 mr-2 rounded-full cursor-pointer"
+                      alt="user-profile"
+                    />
+                  </Link>
+                  <div className="flex flex-col">
+                    <p className="font-bold text-sm">{item.postedBy?.username}</p>
+                    <p>{item.comment}</p>
+                  </div>
                 </div>
+                {item.postedBy?.username == user.username && (
+                  deletingComment ?
+                    <p>Processing...</p>
+                    :
+                    <FaTimes fontSize={20} className='cursor-pointer' onClick={() => deleteComment(item._key)} />
+                )}
               </div>
+
             ))}
           </div>
 
