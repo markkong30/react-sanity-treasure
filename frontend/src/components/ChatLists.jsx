@@ -37,7 +37,7 @@ const ChatLists = ({ user, handleSidebar }) => {
 
         for (const ele of data) {
           if (!existingUsers.includes(ele.username)) {
-            if (ele.follower.filter(ele => ele.userID == user._id).length) {
+            if (ele.follower?.filter(ele => ele.userID == user._id).length) {
               followers = [...followers, { value: ele._id, label: ele.username }]
             } else {
               others = [...others, { value: ele._id, label: ele.username }]
@@ -56,6 +56,7 @@ const ChatLists = ({ user, handleSidebar }) => {
             options: others,
           }
         ];
+        console.log(combinedOptions)
         setChatUserOptions(combinedOptions)
       })
   }
