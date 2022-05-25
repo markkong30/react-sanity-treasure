@@ -2,7 +2,7 @@
 
 <img src="https://user-images.githubusercontent.com/94219999/165226548-88cc2001-f55f-46a9-ae49-848fad05de34.png" alt="treasure_icon" width="200"/>
 
-Live Server: https://react-treasure.netlify.app/
+Live Server: https://react-treasure.netlify.app/  (The Chat Function is temporarily closed due to the policy of free accounts of ChatEngine.io)
 
 This project aims to create a fully functional social media app including post sharing, follower and like system, and real-time direct chats. Users can share their posts to other users, follow users and save posts they like, search and browse filtered posts by categories. Real-time direct chats are possible through socket. 
 
